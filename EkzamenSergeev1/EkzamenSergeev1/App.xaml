@@ -1,0 +1,16 @@
+﻿<Application x:Class="EkzamenSergeev1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:EkzamenSergeev1"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style x:Name="TitleLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Background" Value="LightGreen"/>
+        </Style>
+        <Style x:Name="TitleButtom" TargetType="Button">
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="Background" Value="Coral"/>
+        </Style>
+    </Application.Resources>
+</Application>

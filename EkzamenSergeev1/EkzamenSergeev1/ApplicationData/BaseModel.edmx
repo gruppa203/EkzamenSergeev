@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище bdSergeevModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="KategoriiTovarov">
+          <Key>
+            <PropertyRef Name="KodKategorii" />
+          </Key>
+          <Property Name="KodKategorii" Type="int" Nullable="false" />
+          <Property Name="NazvanieKategorii" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Polzovateli">
+          <Key>
+            <PropertyRef Name="KodPolzovatelya" />
+          </Key>
+          <Property Name="KodPolzovatelya" Type="int" Nullable="false" />
+          <Property Name="FamiliyaPolzovatelya" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="ImyaPolzovatelya" Type="nvarchar" MaxLength="60" />
+          <Property Name="OtchestvoPolzovatelya" Type="nvarchar" MaxLength="60" />
+          <Property Name="LoginPolzovatelya" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ParolPolzovatelya" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RolPolzovatelya" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Postavchiki">
+          <Key>
+            <PropertyRef Name="KodPostavchika" />
+          </Key>
+          <Property Name="KodPostavchika" Type="int" Nullable="false" />
+          <Property Name="NazvanieFirmiPosvachika" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proizvoditeli">
+          <Key>
+            <PropertyRef Name="KodProizvoditelya" />
+          </Key>
+          <Property Name="KodProizvoditelya" Type="int" Nullable="false" />
+          <Property Name="NazvanieFirmiProizvoditelya" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roli">
+          <Key>
+            <PropertyRef Name="KodRoli" />
+          </Key>
+          <Property Name="KodRoli" Type="int" Nullable="false" />
+          <Property Name="NazvanieRoli" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tovari">
+          <Key>
+            <PropertyRef Name="ArtikylTovara" />
+          </Key>
+          <Property Name="ArtikylTovara" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="NaimenovanieTovara" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StoimostTovara" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="EdenitsaIzmeriniya" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="KodProizvoditelya" Type="int" Nullable="false" />
+          <Property Name="KodPostavchika" Type="int" Nullable="false" />
+          <Property Name="KategoriyaTovara" Type="int" Nullable="false" />
+          <Property Name="SkidkaNaTovar" Type="int" />
+          <Property Name="MaksimalnyaiaSkidka" Type="int" Nullable="false" />
+          <Property Name="KolichestoNaSklade" Type="int" Nullable="false" />
+          <Property Name="OpisanieTovara" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IzobrajenieTovara" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK_Polzovateli_Roli">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Polzovateli" Type="Self.Polzovateli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="KodRoli" />
+            </Principal>
+            <Dependent Role="Polzovateli">
+              <PropertyRef Name="RolPolzovatelya" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tovari_KategoriiTovarov">
+          <End Role="KategoriiTovarov" Type="Self.KategoriiTovarov" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KategoriiTovarov">
+              <PropertyRef Name="KodKategorii" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KategoriyaTovara" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tovari_Postavchiki">
+          <End Role="Postavchiki" Type="Self.Postavchiki" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Postavchiki">
+              <PropertyRef Name="KodPostavchika" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KodPostavchika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tovari_Proizvoditeli">
+          <End Role="Proizvoditeli" Type="Self.Proizvoditeli" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proizvoditeli">
+              <PropertyRef Name="KodProizvoditelya" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KodProizvoditelya" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище bdSergeevModelContainer">
+          <EntitySet Name="KategoriiTovarov" EntityType="Self.KategoriiTovarov" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Polzovateli" EntityType="Self.Polzovateli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Postavchiki" EntityType="Self.Postavchiki" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proizvoditeli" EntityType="Self.Proizvoditeli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roli" EntityType="Self.Roli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tovari" EntityType="Self.Tovari" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Polzovateli_Roli" Association="Self.FK_Polzovateli_Roli">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Polzovateli" EntitySet="Polzovateli" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tovari_KategoriiTovarov" Association="Self.FK_Tovari_KategoriiTovarov">
+            <End Role="KategoriiTovarov" EntitySet="KategoriiTovarov" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tovari_Postavchiki" Association="Self.FK_Tovari_Postavchiki">
+            <End Role="Postavchiki" EntitySet="Postavchiki" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tovari_Proizvoditeli" Association="Self.FK_Tovari_Proizvoditeli">
+            <End Role="Proizvoditeli" EntitySet="Proizvoditeli" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bdSergeevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="KategoriiTovarov">
+          <Key>
+            <PropertyRef Name="KodKategorii" />
+          </Key>
+          <Property Name="KodKategorii" Type="Int32" Nullable="false" />
+          <Property Name="NazvanieKategorii" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tovari" Relationship="Self.FK_Tovari_KategoriiTovarov" FromRole="KategoriiTovarov" ToRole="Tovari" />
+        </EntityType>
+        <EntityType Name="Polzovateli">
+          <Key>
+            <PropertyRef Name="KodPolzovatelya" />
+          </Key>
+          <Property Name="KodPolzovatelya" Type="Int32" Nullable="false" />
+          <Property Name="FamiliyaPolzovatelya" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImyaPolzovatelya" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="OtchestvoPolzovatelya" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="LoginPolzovatelya" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParolPolzovatelya" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RolPolzovatelya" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roli" Relationship="Self.FK_Polzovateli_Roli" FromRole="Polzovateli" ToRole="Roli" />
+        </EntityType>
+        <EntityType Name="Postavchiki">
+          <Key>
+            <PropertyRef Name="KodPostavchika" />
+          </Key>
+          <Property Name="KodPostavchika" Type="Int32" Nullable="false" />
+          <Property Name="NazvanieFirmiPosvachika" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tovari" Relationship="Self.FK_Tovari_Postavchiki" FromRole="Postavchiki" ToRole="Tovari" />
+        </EntityType>
+        <EntityType Name="Proizvoditeli">
+          <Key>
+            <PropertyRef Name="KodProizvoditelya" />
+          </Key>
+          <Property Name="KodProizvoditelya" Type="Int32" Nullable="false" />
+          <Property Name="NazvanieFirmiProizvoditelya" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tovari" Relationship="Self.FK_Tovari_Proizvoditeli" FromRole="Proizvoditeli" ToRole="Tovari" />
+        </EntityType>
+        <EntityType Name="Roli">
+          <Key>
+            <PropertyRef Name="KodRoli" />
+          </Key>
+          <Property Name="KodRoli" Type="Int32" Nullable="false" />
+          <Property Name="NazvanieRoli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Polzovateli" Relationship="Self.FK_Polzovateli_Roli" FromRole="Roli" ToRole="Polzovateli" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tovari">
+          <Key>
+            <PropertyRef Name="ArtikylTovara" />
+          </Key>
+          <Property Name="ArtikylTovara" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NaimenovanieTovara" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StoimostTovara" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="EdenitsaIzmeriniya" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KodProizvoditelya" Type="Int32" Nullable="false" />
+          <Property Name="KodPostavchika" Type="Int32" Nullable="false" />
+          <Property Name="KategoriyaTovara" Type="Int32" Nullable="false" />
+          <Property Name="SkidkaNaTovar" Type="Int32" />
+          <Property Name="MaksimalnyaiaSkidka" Type="Int32" Nullable="false" />
+          <Property Name="KolichestoNaSklade" Type="Int32" Nullable="false" />
+          <Property Name="OpisanieTovara" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IzobrajenieTovara" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KategoriiTovarov" Relationship="Self.FK_Tovari_KategoriiTovarov" FromRole="Tovari" ToRole="KategoriiTovarov" />
+          <NavigationProperty Name="Postavchiki" Relationship="Self.FK_Tovari_Postavchiki" FromRole="Tovari" ToRole="Postavchiki" />
+          <NavigationProperty Name="Proizvoditeli" Relationship="Self.FK_Tovari_Proizvoditeli" FromRole="Tovari" ToRole="Proizvoditeli" />
+        </EntityType>
+        <Association Name="FK_Tovari_KategoriiTovarov">
+          <End Role="KategoriiTovarov" Type="Self.KategoriiTovarov" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KategoriiTovarov">
+              <PropertyRef Name="KodKategorii" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KategoriyaTovara" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Polzovateli_Roli">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Polzovateli" Type="Self.Polzovateli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="KodRoli" />
+            </Principal>
+            <Dependent Role="Polzovateli">
+              <PropertyRef Name="RolPolzovatelya" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tovari_Postavchiki">
+          <End Role="Postavchiki" Type="Self.Postavchiki" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Postavchiki">
+              <PropertyRef Name="KodPostavchika" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KodPostavchika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tovari_Proizvoditeli">
+          <End Role="Proizvoditeli" Type="Self.Proizvoditeli" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tovari" Type="Self.Tovari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proizvoditeli">
+              <PropertyRef Name="KodProizvoditelya" />
+            </Principal>
+            <Dependent Role="Tovari">
+              <PropertyRef Name="KodProizvoditelya" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bdSergeevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KategoriiTovarov" EntityType="Self.KategoriiTovarov" />
+          <EntitySet Name="Polzovateli" EntityType="Self.Polzovateli" />
+          <EntitySet Name="Postavchiki" EntityType="Self.Postavchiki" />
+          <EntitySet Name="Proizvoditeli" EntityType="Self.Proizvoditeli" />
+          <EntitySet Name="Roli" EntityType="Self.Roli" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tovari" EntityType="Self.Tovari" />
+          <AssociationSet Name="FK_Tovari_KategoriiTovarov" Association="Self.FK_Tovari_KategoriiTovarov">
+            <End Role="KategoriiTovarov" EntitySet="KategoriiTovarov" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Polzovateli_Roli" Association="Self.FK_Polzovateli_Roli">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Polzovateli" EntitySet="Polzovateli" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tovari_Postavchiki" Association="Self.FK_Tovari_Postavchiki">
+            <End Role="Postavchiki" EntitySet="Postavchiki" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tovari_Proizvoditeli" Association="Self.FK_Tovari_Proizvoditeli">
+            <End Role="Proizvoditeli" EntitySet="Proizvoditeli" />
+            <End Role="Tovari" EntitySet="Tovari" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище bdSergeevModelContainer" CdmEntityContainer="bdSergeevEntities">
+          <EntitySetMapping Name="KategoriiTovarov">
+            <EntityTypeMapping TypeName="bdSergeevModel.KategoriiTovarov">
+              <MappingFragment StoreEntitySet="KategoriiTovarov">
+                <ScalarProperty Name="KodKategorii" ColumnName="KodKategorii" />
+                <ScalarProperty Name="NazvanieKategorii" ColumnName="NazvanieKategorii" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Polzovateli">
+            <EntityTypeMapping TypeName="bdSergeevModel.Polzovateli">
+              <MappingFragment StoreEntitySet="Polzovateli">
+                <ScalarProperty Name="KodPolzovatelya" ColumnName="KodPolzovatelya" />
+                <ScalarProperty Name="FamiliyaPolzovatelya" ColumnName="FamiliyaPolzovatelya" />
+                <ScalarProperty Name="ImyaPolzovatelya" ColumnName="ImyaPolzovatelya" />
+                <ScalarProperty Name="OtchestvoPolzovatelya" ColumnName="OtchestvoPolzovatelya" />
+                <ScalarProperty Name="LoginPolzovatelya" ColumnName="LoginPolzovatelya" />
+                <ScalarProperty Name="ParolPolzovatelya" ColumnName="ParolPolzovatelya" />
+                <ScalarProperty Name="RolPolzovatelya" ColumnName="RolPolzovatelya" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Postavchiki">
+            <EntityTypeMapping TypeName="bdSergeevModel.Postavchiki">
+              <MappingFragment StoreEntitySet="Postavchiki">
+                <ScalarProperty Name="KodPostavchika" ColumnName="KodPostavchika" />
+                <ScalarProperty Name="NazvanieFirmiPosvachika" ColumnName="NazvanieFirmiPosvachika" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proizvoditeli">
+            <EntityTypeMapping TypeName="bdSergeevModel.Proizvoditeli">
+              <MappingFragment StoreEntitySet="Proizvoditeli">
+                <ScalarProperty Name="KodProizvoditelya" ColumnName="KodProizvoditelya" />
+                <ScalarProperty Name="NazvanieFirmiProizvoditelya" ColumnName="NazvanieFirmiProizvoditelya" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roli">
+            <EntityTypeMapping TypeName="bdSergeevModel.Roli">
+              <MappingFragment StoreEntitySet="Roli">
+                <ScalarProperty Name="KodRoli" ColumnName="KodRoli" />
+                <ScalarProperty Name="NazvanieRoli" ColumnName="NazvanieRoli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="bdSergeevModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tovari">
+            <EntityTypeMapping TypeName="bdSergeevModel.Tovari">
+              <MappingFragment StoreEntitySet="Tovari">
+                <ScalarProperty Name="ArtikylTovara" ColumnName="ArtikylTovara" />
+                <ScalarProperty Name="NaimenovanieTovara" ColumnName="NaimenovanieTovara" />
+                <ScalarProperty Name="StoimostTovara" ColumnName="StoimostTovara" />
+                <ScalarProperty Name="EdenitsaIzmeriniya" ColumnName="EdenitsaIzmeriniya" />
+                <ScalarProperty Name="KodProizvoditelya" ColumnName="KodProizvoditelya" />
+                <ScalarProperty Name="KodPostavchika" ColumnName="KodPostavchika" />
+                <ScalarProperty Name="KategoriyaTovara" ColumnName="KategoriyaTovara" />
+                <ScalarProperty Name="SkidkaNaTovar" ColumnName="SkidkaNaTovar" />
+                <ScalarProperty Name="MaksimalnyaiaSkidka" ColumnName="MaksimalnyaiaSkidka" />
+                <ScalarProperty Name="KolichestoNaSklade" ColumnName="KolichestoNaSklade" />
+                <ScalarProperty Name="OpisanieTovara" ColumnName="OpisanieTovara" />
+                <ScalarProperty Name="IzobrajenieTovara" ColumnName="IzobrajenieTovara" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
